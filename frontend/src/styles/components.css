@@ -1,10 +1,38 @@
 .btn {
   display: inline-block;
   padding: 17px 30px;
+  border: none;
   border-radius: 999px;
+  font-family: inherit;
   font-size: 16px;
   font-weight: 600;
-  transition: background 0.2s, transform 0.2s;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn--block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn--google {
+  border: 1px solid rgba(30, 42, 35, 0.2);
+  background: rgba(255, 255, 255, 0.55);
+  color: var(--color-ink);
+}
+
+.btn--google:hover {
+  border-color: var(--color-ink);
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .btn--small {
@@ -17,7 +45,7 @@
   color: var(--color-white);
 }
 
-.btn--primary:hover {
+.btn--primary:hover:not(:disabled) {
   background: var(--color-green-dark);
   transform: translateY(-2px);
 }

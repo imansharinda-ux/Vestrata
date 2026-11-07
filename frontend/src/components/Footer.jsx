@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import LineMask from "./LineMask.jsx";
 import { footerColumns, socialLinks, legalLinks } from "../data/navLinks.js";
 
@@ -15,9 +16,9 @@ function Footer() {
             <nav key={column.title} className="footer__column" aria-label={column.title}>
               <span className="footer__heading">{column.title}</span>
               {column.links.map((link) => (
-                <a key={link.label} className="footer__link" href={link.href}>
+                <Link key={link.label} className="footer__link" to={link.href}>
                   {link.label}
-                </a>
+                </Link>
               ))}
             </nav>
           ))}

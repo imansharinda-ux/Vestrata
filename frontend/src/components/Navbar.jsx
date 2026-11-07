@@ -1,26 +1,27 @@
+import { Link } from "react-router-dom";
 import { navLinks } from "../data/navLinks.js";
 
 function Navbar() {
   return (
     <nav className="navbar" aria-label="Main">
       <div className="navbar__left">
-        <a className="brand" href="/" aria-label="Vestrata home">
+        <Link className="brand" to="/" aria-label="Vestrata home">
           <img className="brand__logo" src="/logo.svg" alt="" width="40" height="40" />
           <span className="brand__name">Vestrata</span>
-        </a>
+        </Link>
         <ul className="navbar__links">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a className="navbar__link" href={link.href}>
+              <Link className="navbar__link" to={link.href}>
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
       </div>
-      <a className="btn btn--primary btn--small" href="/login">
+      <Link className="btn btn--primary btn--small" to="/login">
         Sign in
-      </a>
+      </Link>
     </nav>
   );
 }
