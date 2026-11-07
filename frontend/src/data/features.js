@@ -1,0 +1,36 @@
+export const features = [
+  {
+    title: "Analyze a property",
+    text: "Enter the details, get our estimate, set your price and see your returns.",
+    href: "/analyze",
+    image: "/images/pool.jpg",
+    imageAlt: "",
+    size: "large",
+  },
+  {
+    title: "Real listings",
+    text: "Homes for sale, already analyzed.",
+    href: "/listings",
+    image: "/images/kitchen.jpg",
+    imageAlt: "",
+    size: "wide",
+  },
+  {
+    title: "Compare",
+    text: "Up to 4, one score",
+    href: "/compare",
+    image: "/images/patio.jpg",
+    imageAlt: "Covered patio with dining table",
+    size: "small",
+    color: "green",
+  },
+  {
+    title: "Alerts",
+    text: "When numbers change",
+    href: "/alerts",
+    image: "/images/dining.jpg",
+    imageAlt: "Dining area next to a pool",
+    size: "small",
+    color: "blue",
+  },
+];

@@ -1,0 +1,93 @@
+@font-face {
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/inter-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/inter-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/inter-latin-600-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url("/fonts/inter-latin-700-normal.woff2") format("woff2");
+}
+
+:root {
+  --color-green: #2e6b4f;
+  --color-green-dark: #24563f;
+  --color-green-light: #9ccba8;
+  --color-ink: #1e2a23;
+  --color-text: #3e4a43;
+  --color-nav: #2c3a31;
+  --color-muted: #5c6660;
+  --color-page: #f2f0ea;
+  --color-white: #ffffff;
+  --color-line: #d6d9d1;
+  --color-card-green: #2a4335;
+  --color-card-blue: #2c4056;
+
+  --ease-out: cubic-bezier(0.2, 0.75, 0.15, 1);
+
+  --page-padding: 5%;
+  --section-padding: 80px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: "Inter", Arial, sans-serif;
+}
+
+h1,
+h2,
+p,
+figure,
+blockquote,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 3px;
+}
