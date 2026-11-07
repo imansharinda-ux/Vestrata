@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import LineMask from "./LineMask.jsx";
 
@@ -21,12 +22,12 @@ function Hero() {
           what a rental will earn before you make an offer.
         </p>
         <div className="hero__actions pop-in pop-in--second">
-          <a className="btn btn--primary" href="/analyze">
+          <Link className="btn btn--primary" to="/analyze">
             Analyze a property
-          </a>
-          <a className="btn btn--outline" href="/listings">
+          </Link>
+          <Link className="btn btn--outline" to="/listings">
             Browse real listings
-          </a>
+          </Link>
         </div>
       </div>
     </header>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import LineMask from "./LineMask.jsx";
 import { steps } from "../data/steps.js";
 
@@ -39,11 +40,11 @@ function Steps() {
               .join(" ");
 
             return (
-              <a key={step.number} className={stepClasses} href={step.href}>
+              <Link key={step.number} className={stepClasses} to={step.href}>
                 <span className="step__pin">{step.number}</span>
                 <span className="step__title">{step.title}</span>
                 <span className="step__text">{step.text}</span>
-              </a>
+              </Link>
             );
           })}
         </div>

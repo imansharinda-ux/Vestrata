@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function FeatureCard({ feature, delay }) {
   const cardClasses = [
     "bento",
@@ -24,14 +26,14 @@ function FeatureCard({ feature, delay }) {
   const shadeClass = feature.size === "wide" ? "bento__shade bento__shade--soft" : "bento__shade";
 
   return (
-    <a className={cardClasses} href={feature.href}>
+    <Link className={cardClasses} to={feature.href}>
       <img className="bento__image" src={feature.image} alt={feature.imageAlt} />
       <div className={shadeClass}></div>
       <div className="bento__body">
         <span className={titleClass}>{feature.title}</span>
         <span className={textClass}>{feature.text}</span>
       </div>
-    </a>
+    </Link>
   );
 }
 
