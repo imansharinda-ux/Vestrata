@@ -15,6 +15,7 @@ import "./styles/alerts.css";
 import "./styles/rules.css";
 import "./styles/profile.css";
 import "./styles/contact.css";
+import "./styles/guide.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
