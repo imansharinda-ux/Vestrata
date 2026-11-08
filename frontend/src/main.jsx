@@ -10,6 +10,7 @@ import "./styles/login.css";
 import "./styles/app-navbar.css";
 import "./styles/analyze.css";
 import "./styles/listings.css";
+import "./styles/compare.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
