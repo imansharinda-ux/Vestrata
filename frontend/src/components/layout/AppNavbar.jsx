@@ -36,9 +36,11 @@ function AppNavbar({ action = defaultAction }) {
           <span className="account-chip__avatar">{ACCOUNT_INITIALS}</span>
           My account
         </Link>
-        <Link className={`btn btn--${action.style} btn--compact`} to={action.to}>
-          {action.label}
-        </Link>
+        {action && (
+          <Link className={`btn btn--${action.style} btn--compact`} to={action.to}>
+            {action.label}
+          </Link>
+        )}
       </div>
     </nav>
   );
