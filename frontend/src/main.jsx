@@ -7,6 +7,8 @@ import "./styles/animations.css";
 import "./styles/components.css";
 import "./styles/sections.css";
 import "./styles/login.css";
+import "./styles/app-navbar.css";
+import "./styles/analyze.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
