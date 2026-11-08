@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import AnalyzePage from "./pages/AnalyzePage.jsx";
 import ListingsPage from "./pages/ListingsPage.jsx";
 import ComparePage from "./pages/ComparePage.jsx";
+import AlertsPage from "./pages/AlertsPage.jsx";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/analyze" element={<AnalyzePage />} />
       <Route path="/listings" element={<ListingsPage />} />
       <Route path="/compare" element={<ComparePage />} />
+      <Route path="/alerts" element={<AlertsPage />} />
     </Routes>
   );
 }
