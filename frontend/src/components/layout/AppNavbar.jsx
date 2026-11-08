@@ -4,7 +4,13 @@ import { navLinks } from "../../data/navLinks.js";
 const ACCOUNT_INITIALS = "IS";
 const SAVED_COUNT = 6;
 
-function AppNavbar() {
+const defaultAction = {
+  label: `My saved (${SAVED_COUNT})`,
+  to: "/compare",
+  style: "dark",
+};
+
+function AppNavbar({ action = defaultAction }) {
   return (
     <nav className="app-navbar" aria-label="Main">
       <div className="app-navbar__left">
@@ -30,8 +36,8 @@ function AppNavbar() {
           <span className="account-chip__avatar">{ACCOUNT_INITIALS}</span>
           My account
         </Link>
-        <Link className="btn btn--dark btn--compact" to="/compare">
-          My saved ({SAVED_COUNT})
+        <Link className={`btn btn--${action.style} btn--compact`} to={action.to}>
+          {action.label}
         </Link>
       </div>
     </nav>
