@@ -7,6 +7,7 @@ import ComparePage from "./pages/ComparePage.jsx";
 import AlertsPage from "./pages/AlertsPage.jsx";
 import RulesPage from "./pages/RulesPage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
+import GuidePage from "./pages/GuidePage.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/alerts" element={<AlertsPage />} />
       <Route path="/rules" element={<RulesPage />} />
       <Route path="/profile" element={<ProfilePage />} />
+      <Route path="/guide" element={<GuidePage />} />
     </Routes>
   );
 }
