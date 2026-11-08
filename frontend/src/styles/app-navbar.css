@@ -1,0 +1,82 @@
+.app-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--color-page);
+}
+
+.app-navbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px var(--page-padding);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.app-navbar__left {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 56px;
+}
+
+.app-navbar__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  font-size: 15px;
+  color: var(--color-nav);
+}
+
+.app-navbar__link:hover {
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.app-navbar__link--active {
+  font-weight: 600;
+  color: var(--color-green);
+}
+
+.app-navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.brand--small .brand__name {
+  font-size: 22px;
+}
+
+.account-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 14px 5px 5px;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  background: var(--color-white);
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.account-chip:hover {
+  border-color: var(--color-green);
+  box-shadow: 0 6px 16px rgba(46, 107, 79, 0.15);
+}
+
+.account-chip__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-green-dark), #5fa777);
+  color: var(--color-white);
+  font-size: 13px;
+  font-weight: 700;
+}
