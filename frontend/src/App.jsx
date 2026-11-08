@@ -6,6 +6,7 @@ import ListingsPage from "./pages/ListingsPage.jsx";
 import ComparePage from "./pages/ComparePage.jsx";
 import AlertsPage from "./pages/AlertsPage.jsx";
 import RulesPage from "./pages/RulesPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/compare" element={<ComparePage />} />
       <Route path="/alerts" element={<AlertsPage />} />
       <Route path="/rules" element={<RulesPage />} />
+      <Route path="/profile" element={<ProfilePage />} />
     </Routes>
   );
 }

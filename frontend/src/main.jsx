@@ -13,6 +13,7 @@ import "./styles/listings.css";
 import "./styles/compare.css";
 import "./styles/alerts.css";
 import "./styles/rules.css";
+import "./styles/profile.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
