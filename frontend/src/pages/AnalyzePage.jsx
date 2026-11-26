@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AppNavbar from "../components/layout/AppNavbar.jsx";
 import Stepper from "../components/analyze/Stepper.jsx";
 import PropertyDetailsStep from "../components/analyze/PropertyDetailsStep.jsx";
@@ -8,16 +8,12 @@ import InsuranceStep from "../components/analyze/InsuranceStep.jsx";
 import ResultsStep from "../components/analyze/ResultsStep.jsx";
 import AiDrawer from "../components/analyze/AiDrawer.jsx";
 import { defaultDetails, defaultDeal, defaultInsurance } from "../data/analyzeOptions.js";
-import {
-  estimateProperty,
-  analyzeDeal,
-  getWarnings,
-  getAiExplanation,
-  getSellerQuestions,
-} from "../utils/analysis.js";
+import { findState, getAiExplanation, getSellerQuestions } from "../utils/analysis.js";
+import { fetchAnalysis, fetchEstimate } from "../services/analysisApi.js";
 import { roundToThousand } from "../utils/format.js";
 
-const ESTIMATE_DELAY_MS = 1100;
+const ANALYSIS_DELAY_MS = 250;
+const SERVER_ERROR = "We couldn't reach the analysis service. Make sure the backend is running, then try again.";
 
 function AnalyzePage() {
   const [step, setStep] = useState(1);
@@ -26,19 +22,43 @@ function AnalyzePage() {
   const [deal, setDeal] = useState(defaultDeal);
   const [insurance, setInsurance] = useState(defaultInsurance);
   const [horizon, setHorizon] = useState(5);
+  const [estimate, setEstimate] = useState(null);
+  const [analysis, setAnalysis] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [isAiOpen, setIsAiOpen] = useState(false);
-  const timerRef = useRef(null);
 
-  useEffect(() => () => clearTimeout(timerRef.current), []);
+  const hasEstimate = estimate !== null;
+  const result = analysis ? analysis.result : null;
+  const warnings = analysis ? analysis.warnings : [];
 
-  const estimate = useMemo(() => estimateProperty(details), [details]);
-  const result = analyzeDeal({ details, estimate, deal, insurance, horizon });
-  const warnings = getWarnings({ estimate, result, hazardInfo: result.hazardInfo });
-
-  const cityName = details.city.trim() || estimate.state.name;
+  const state = findState(details.stateCode);
+  const sqft = Math.max(300, Number(details.sqft) || 0);
+  const cityName = details.city.trim() || state.name;
   const street = details.street.trim();
-  const address = (street ? street + ", " : "") + cityName + ", " + estimate.state.code;
+  const address = (street ? street + ", " : "") + cityName + ", " + state.code;
+
+  useEffect(() => {
+    if (!hasEstimate) return undefined;
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      fetchAnalysis({ details, deal, insurance, horizon }, controller.signal)
+        .then((data) => {
+          setEstimate(data.estimate);
+          setAnalysis(data);
+          setError("");
+        })
+        .catch((requestError) => {
+          if (requestError.name !== "AbortError") setError(SERVER_ERROR);
+        });
+    }, ANALYSIS_DELAY_MS);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [hasEstimate, details, deal, insurance, horizon]);
 
   const goToStep = (number) => {
     setStep(number);
@@ -59,20 +79,27 @@ function AnalyzePage() {
     setInsurance((current) => ({ ...current, ...changes }));
   };
 
-  const requestEstimate = () => {
+  const requestEstimate = async () => {
     setIsLoading(true);
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
+    setError("");
+    try {
+      const data = await fetchEstimate(details);
       if (!deal.priceTouched) {
-        const asking = roundToThousand(estimate.value * 1.03);
+        const asking = roundToThousand(data.value * 1.03);
         updateDeal({ asking: String(asking), offer: String(roundToThousand(asking * 0.97)) });
       }
-      setIsLoading(false);
+      setEstimate(data);
       goToStep(2);
-    }, ESTIMATE_DELAY_MS);
+    } catch {
+      setError(SERVER_ERROR);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const closeAi = useCallback(() => setIsAiOpen(false), []);
+
+  const waitingMessage = <p className="analyze-message">Working out your numbers…</p>;
 
   return (
     <div className="app-page">
@@ -84,11 +111,17 @@ function AnalyzePage() {
         onBack={() => goToStep(Math.max(1, step - 1))}
       />
 
+      {error && (
+        <p className="analyze-message analyze-message--error" role="alert">
+          {error}
+        </p>
+      )}
+
       <main className="analyze">
         {step === 1 && (
           <PropertyDetailsStep
             details={details}
-            sqft={estimate.sqft}
+            sqft={sqft}
             cityName={cityName}
             isLoading={isLoading}
             onChange={updateDetails}
@@ -96,51 +129,63 @@ function AnalyzePage() {
           />
         )}
 
-        {step === 2 && (
-          <EstimateStep
-            details={details}
-            estimate={estimate}
-            address={address}
-            onEdit={() => goToStep(1)}
-            onContinue={() => goToStep(3)}
-          />
-        )}
+        {step === 2 &&
+          (estimate ? (
+            <EstimateStep
+              details={details}
+              estimate={estimate}
+              address={address}
+              onEdit={() => goToStep(1)}
+              onContinue={() => goToStep(3)}
+            />
+          ) : (
+            waitingMessage
+          ))}
 
-        {step === 3 && (
-          <PriceLoanStep
-            estimate={estimate}
-            deal={deal}
-            result={result}
-            onDealChange={updateDeal}
-            onContinue={() => goToStep(4)}
-          />
-        )}
+        {step === 3 &&
+          (result ? (
+            <PriceLoanStep
+              estimate={estimate}
+              deal={deal}
+              result={result}
+              onDealChange={updateDeal}
+              onContinue={() => goToStep(4)}
+            />
+          ) : (
+            waitingMessage
+          ))}
 
-        {step === 4 && (
-          <InsuranceStep
-            result={result}
-            insurance={insurance}
-            onInsuranceChange={updateInsurance}
-            onContinue={() => goToStep(5)}
-          />
-        )}
+        {step === 4 &&
+          (result ? (
+            <InsuranceStep
+              result={result}
+              insurance={insurance}
+              onInsuranceChange={updateInsurance}
+              onContinue={() => goToStep(5)}
+            />
+          ) : (
+            waitingMessage
+          ))}
 
-        {step === 5 && (
-          <ResultsStep
-            estimate={estimate}
-            result={result}
-            deal={deal}
-            address={address}
-            horizon={horizon}
-            warnings={warnings}
-            onHorizonChange={setHorizon}
-            onOpenAi={() => setIsAiOpen(true)}
-            onChangeInsurance={() => goToStep(4)}
-          />
-        )}
+        {step === 5 &&
+          (result ? (
+            <ResultsStep
+              estimate={estimate}
+              result={result}
+              deal={deal}
+              address={address}
+              horizon={horizon}
+              warnings={warnings}
+              onHorizonChange={setHorizon}
+              onOpenAi={() => setIsAiOpen(true)}
+              onChangeInsurance={() => goToStep(4)}
+            />
+          ) : (
+            waitingMessage
+          ))}
       </main>
 
-      {isAiOpen && (
+      {isAiOpen && result && (
         <AiDrawer
           text={getAiExplanation({ estimate, result, cityName })}
           warnings={warnings}
